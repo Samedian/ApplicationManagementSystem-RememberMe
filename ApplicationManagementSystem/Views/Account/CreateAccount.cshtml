@@ -1,0 +1,105 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#Password").blur(function () {
+                var value = $("#Password").val();
+
+                if (value.length < 6) {
+                    alert("Password required to be min 6 character");
+
+                }
+            });
+
+            $("#ConfirmPassword").blur(function () {
+                var pass = $("#Password").val();
+                var confirmPass = $("#ConfirmPassword").val();
+
+                if (pass != confirmPass) {
+                    alert("Password should be match");
+
+                }
+            });
+        });
+    </script>
+
+    @section Scripts{
+        <script type="text/javascript">
+
+
+        $(function () {
+            $("#btnSave").click(function () {
+
+                var userDetailEntity = {};
+                userDetailEntity.UserName = $("#UserName").val();
+                userDetailEntity.EmailId = $("#EmailId").val();
+                userDetailEntity.Password = $("#Password").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("CreateAccount")',
+                    data: '{userDetailEntity: ' + JSON.stringify(userDetailEntity) + '}',
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function () {
+                        alert("Data has been added successfully.");
+                        window.location = "https://localhost:44399/Account/Login";
+                    },
+                    error: function () {
+                        alert("Error while inserting data");
+                    }
+                });
+                return false;
+            });
+        });
+
+        </script>
+    }
+
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+
+        <br />
+        <h4>Account Information</h4>
+        <br />
+        <br />
+        <label for="UserName">Username:</label>
+        <br />
+        <input type="text" id="UserName" name="UserName" placeholder="Enter UserName" required />
+
+        <br />
+        <br />
+
+        <label for="EmailId">EmailId:</label>
+        <br />
+        <input type="email" id="EmailId" name="EmailId" placeholder="Enter E-Mail Id" required />
+
+        <br />
+        <br />
+
+        <label for="Password">Password:</label>
+        <br />
+        <input type="password" id="Password" name="Password" placeholder="Enter Password" required />
+
+        <br />
+        <br />
+
+        <label for="Password">Confirm Password:</label>
+        <br />
+        <input type="password" id="ConfirmPassword" placeholder="Enter Confirm Password" required />
+
+        <br />
+        <br />
+
+        <input type="submit" id="btnSave" value="Register" />
+
+
+    }
+
+</body>
+
+</html>
